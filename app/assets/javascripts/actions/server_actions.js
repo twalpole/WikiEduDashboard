@@ -70,6 +70,12 @@ const ServerActions = Flux.createActions({
 
   fetchRevisions(studentId, courseId) {
     return API.fetchRevisions(studentId, courseId)
+      .then(resp => ({ actionType: 'RECEIVE_FEEDBACK', data: resp }))
+      .catch(resp => ({ actionType: 'API_FAIL', data: resp }));
+  },
+
+  fetchFeedback(revId) {
+    return API.fetchFeedback(revId)
       .then(resp => ({ actionType: 'RECEIVE_REVISIONS', data: resp }))
       .catch(resp => ({ actionType: 'API_FAIL', data: resp }));
   },

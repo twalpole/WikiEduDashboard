@@ -1,5 +1,8 @@
 import React from 'react';
 import OnClickOutside from 'react-onclickoutside';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as FeedbackAction from '../../actions/feedback_action.js';
 
 const Feedback = React.createClass({
   displayName: 'Feedback',
@@ -8,6 +11,14 @@ const Feedback = React.createClass({
     return {
       show: false
     };
+  },
+
+  propTypes: {
+    fetch_feedback : React.PropTypes.object,
+  },
+
+  componentWillMount() {
+    this.props.fetch_feedback(26734);
   },
 
   show() {
@@ -39,7 +50,7 @@ const Feedback = React.createClass({
           <h2>Feedback</h2>
           <a className="button small diff-viewer-feedback" href="" target="_blank">{I18n.t('courses.suggestions_feedback')}</a>
           <p>
-            Some awesome feedback.
+            {this.props.feedback}
           </p>
           {button}
         </div>
@@ -55,4 +66,12 @@ const Feedback = React.createClass({
   }
 });
 
-export default OnClickOutside(Feedback);
+const mapDispatchToProps = dispatch => ({
+  fetch_feedback: bindActionCreators(FeedbackAction, dispatch).fetchFeedback
+});
+
+const mapStateToProps = state => ({
+  feedback: state.feedback
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(OnClickOutside(Feedback));
