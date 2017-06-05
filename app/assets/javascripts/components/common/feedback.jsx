@@ -50,7 +50,7 @@ const Feedback = React.createClass({
           <h2>Feedback</h2>
           <a className="button small diff-viewer-feedback" href="" target="_blank">{I18n.t('courses.suggestions_feedback')}</a>
           <p>
-            {this.props.feedback}
+            {this.props.feedback[26734][0].message}
           </p>
           {button}
         </div>

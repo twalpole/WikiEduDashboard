@@ -11,7 +11,11 @@ import API from '../utils/api.js';
 export function fetchFeedback(revId) {
   return function (dispatch) {
     return API.fetchFeedback(revId)
-      .then(() => (dispatch({ type: types.FEEDBACK })))
+      .then((resp) => {
+        console.log(resp);
+        dispatch({ type: types.FEEDBACK, data: resp, revId: revId })
+      }
+      )
       // TODO: The Flux stores still handle API failures, so we delegate to a
       // Flux action. Once all API_FAIL actions can be handled by Redux, we can
       // replace this with a regular action dispatch.
