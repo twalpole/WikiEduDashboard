@@ -57,7 +57,6 @@ describe 'activity page', type: :feature, js: true do
     context 'dyk eligible' do
       it 'displays a list of DYK-eligible articles' do
         visit '/recent-activity'
-        sleep 1
         expect(page).to have_content article.title.tr('_', ' ')
       end
 

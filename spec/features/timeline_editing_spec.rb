@@ -50,11 +50,11 @@ describe 'timeline editing', type: :feature, js: true do
 
     # Interact with training modules within a block
     find('.week-1').hover
-    sleep 0.5
+    # sleep 0.5
     within('.week-1') do
       find('.block__edit-block', match: :first).click
     end
-    sleep 1
+    # sleep 1
     within(".week-1 .block-kind-#{Block::KINDS['assignment']}") do
       find('div.Select--multi').send_keys(unassigned_module_name, :enter)
     end
@@ -64,7 +64,7 @@ describe 'timeline editing', type: :feature, js: true do
     within ".week-1 .block-kind-#{Block::KINDS['assignment']}" do
       expect(page).to have_content unassigned_module_name
     end
-    sleep 1
+    # sleep 1
   end
 
   it 'lets users delete a week' do
@@ -74,14 +74,14 @@ describe 'timeline editing', type: :feature, js: true do
       find('button.week__delete-week').click
     end
     expect(page).to have_content 'Add Assignment'
-    sleep 1
+    # sleep 1
   end
 
   it 'lets users delete a block' do
     visit "/courses/#{Course.first.slug}/timeline"
     expect(page).to have_content 'Block Title'
     find('.week-1').hover
-    sleep 0.5
+    # sleep 0.5
     within('.week-1') do
       find('.block__edit-block', match: :first).click
       accept_confirm do
@@ -90,7 +90,7 @@ describe 'timeline editing', type: :feature, js: true do
     end
 
     expect(page).not_to have_content 'Block Title'
-    sleep 1
+    # sleep 1
   end
 
   it 'handles cases of "save all" after blocks have been deleted' do
@@ -98,14 +98,14 @@ describe 'timeline editing', type: :feature, js: true do
 
     # Open edit mode for the first block
     find(".week-1 .block-kind-#{Block::KINDS['assignment']}").hover
-    sleep 0.5
+    # sleep 0.5
     within ".week-1 .block-kind-#{Block::KINDS['assignment']}" do
       find('.block__edit-block', match: :first).click
     end
 
     # Open edit mode for the second block and delete it
     find(".week-1 .block-kind-#{Block::KINDS['in_class']}").hover
-    sleep 0.5
+    # sleep 0.5
     within ".week-1 .block-kind-#{Block::KINDS['in_class']}" do
       find('.block__edit-block', match: :first).click
       accept_confirm do
@@ -118,14 +118,14 @@ describe 'timeline editing', type: :feature, js: true do
     click_button 'Save All'
     expect(page).to have_content 'Block Title'
     expect(page).not_to have_content 'Another Title'
-    sleep 1
+    # sleep 1
   end
 
   it 'lets users remove grading from a block' do
     visit "/courses/#{Course.last.slug}/timeline"
     # Open edit mode for the first block
     find(".week-1 .block-kind-#{Block::KINDS['assignment']}").hover
-    sleep 0.5
+    # sleep 0.5
     within ".week-1 .block-kind-#{Block::KINDS['assignment']}" do
       find('.block__edit-block', match: :first).click
     end

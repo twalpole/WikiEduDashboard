@@ -134,7 +134,6 @@ describe 'New course creation and editing', type: :feature do
       find('#course_expected_students').set('500')
       find('textarea').set('In this course, we study things.')
 
-      sleep 1
 
       start_date = '2015-01-01'
       end_date = '2015-12-15'
@@ -142,8 +141,6 @@ describe 'New course creation and editing', type: :feature do
       find('div.DayPicker-Day--selected', text: '1').click
       find('.course_end-datetime-control input').set('2015-12-01')
       find('div.DayPicker-Day', text: '15').click
-
-      sleep 1
 
       # This click should create the course and start the wizard
       click_button 'Create my Course!'
@@ -155,11 +152,13 @@ describe 'New course creation and editing', type: :feature do
       # validate either blackout date chosen
       # or "no blackout dates" checkbox checked
       expect(page).to have_css('button.dark[disabled=""]')
-      start_input = find('input.start', match: :first).value
-      sleep 1
-      expect(start_input.to_date).to eq(start_date.to_date)
-      end_input = find('input.end', match: :first).value
-      expect(end_input.to_date).to eq(end_date.to_date)
+      # start_input = find('input.start', match: :first).value
+      # sleep 1
+      # expect(start_input.to_date).to eq(start_date.to_date)
+      # end_input = find('input.end', match: :first).value
+      # expect(end_input.to_date).to eq(end_date.to_date)
+      expect(page).to have_field(class: 'start', with: start_date)
+      expect(page).to have_field(class: 'end', with: end_date)
 
       # capybara doesn't like trying to click the calendar
       # to set a blackout date
@@ -213,23 +212,21 @@ describe 'New course creation and editing', type: :feature do
 
       # Click edit, mark a gradeable and save it.
       find('.week-1').hover
-      sleep 0.5
+      # sleep 0.5
       within('.week-1') do
         omniclick find('.block__edit-block')
         find('p.graded input[type=checkbox]').set(true)
-        sleep 1
+        # sleep 1
         click_button 'Save'
       end
-      sleep 1
+      # sleep 1
 
       # Edit the gradeable.
       within('.grading__grading-container') do
         click_button 'Edit'
-        sleep 1
-        all('input').last.set('50')
-        sleep 1
+        # sleep 1
+        all('input', minimum: 1).last.set('50')
         click_button 'Save'
-        sleep 1
         expect(page).to have_content 'Value: 50%'
       end
 
@@ -272,8 +269,10 @@ describe 'New course creation and editing', type: :feature do
 
       start_date = '2015-01-01'
       end_date = '2015-12-15'
-      find('input[placeholder="Start date (YYYY-MM-DD)"]').set(start_date)
-      find('input[placeholder="End date (YYYY-MM-DD)"]').set(end_date)
+      # find('input[placeholder="Start date (YYYY-MM-DD)"]').set(start_date)
+      # find('input[placeholder="End date (YYYY-MM-DD)"]').set(end_date)
+      fill_in("Start date (YYYY-MM-DD)", with: start_date)
+      fill_in("End date (YYYY-MM-DD)", with: end_date)
       find('div.wizard__panel').click # click to escape the calendar popup
 
       # This click should not successfully create a course.
@@ -305,8 +304,6 @@ describe 'New course creation and editing', type: :feature do
       sleep 1
 
       go_through_researchwrite_wizard
-
-      sleep 1
 
       expect(page).to have_content 'Week 12'
 
@@ -388,13 +385,12 @@ describe 'New course creation and editing', type: :feature do
       click_button 'Generate Timeline'
       expect(page).to have_content 'Launch the Wizard' # 'no timeline' banner above the Timeline
       expect(page).to have_content 'Add Assignment' # Button in the Timeline
-      sleep 1
 
       # Add a week
       within '.timeline__week-nav .panel' do
         find('.week-nav__add-week').click
       end
-      sleep 1
+
       within '.timeline__weeks' do
         expect(page).to have_content 'Week 1'
         find('.week__add-block').click

@@ -108,14 +108,12 @@ describe 'Student users', type: :feature, js: true do
     it 'redirects to an error page if passcode is incorrect' do
       login_as(user, scope: :user)
       visit "/courses/#{Course.first.slug}"
-      sleep 1
       click_button 'Join course'
       within('.confirm-modal') do
         find('input').set('wrong_passcode')
         click_button 'OK'
       end
       expect(page).to have_content 'Incorrect passcode'
-      sleep 5
     end
   end
 
@@ -234,7 +232,6 @@ describe 'Student users', type: :feature, js: true do
              user_id: 200,
              role: CoursesUsers::Roles::STUDENT_ROLE)
       visit "/courses/#{Course.first.slug}/students"
-      sleep 2
 
       # Add an assigned article
       find('button.border', match: :first).click

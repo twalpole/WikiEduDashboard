@@ -35,7 +35,6 @@ describe 'course stats', type: :feature, js: true do
     cu.update_cache
     course.update_cache
     visit "/courses/#{course.slug}"
-    sleep 1
 
     expect(page.find('#articles-created')).to have_content articles.count
     expect(page.find('#total-edits')).to have_content revisions.count

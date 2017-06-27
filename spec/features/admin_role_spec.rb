@@ -57,7 +57,6 @@ describe 'Admin users', type: :feature, js: true do
   describe 'visiting the dashboard' do
     it 'should see submitted courses awaiting approval' do
       visit root_path
-      sleep 1
       expect(page).to have_content 'Submitted & Pending Approval'
       expect(page).to have_content 'My Submitted Course'
     end
@@ -69,7 +68,6 @@ describe 'Admin users', type: :feature, js: true do
       stub_chat_channel_create_success
 
       visit "/courses/#{Course.first.slug}"
-      sleep 1
 
       # Edit details and add campaign
       click_button('Edit Details')
@@ -83,7 +81,6 @@ describe 'Admin users', type: :feature, js: true do
 
       select 'Fall 2015', from: 'campaign'
       find('.pop button', visible: true).click
-      sleep 1
 
       expect(page).to have_content 'Your course has been published'
 
@@ -102,7 +99,6 @@ describe 'Admin users', type: :feature, js: true do
              campaign_id: 1,
              course_id: 10001)
       visit "/courses/#{Course.first.slug}"
-      sleep 1
 
       expect(page).to have_content 'Your course has been published'
 
@@ -110,7 +106,6 @@ describe 'Admin users', type: :feature, js: true do
       click_button('Edit Details')
       page.all('.button.border.plus')[4].click
       page.find('.button.border.plus', text: '-').click
-      sleep 1
 
       expect(page).to have_content 'This course has been submitted'
 
@@ -127,7 +122,6 @@ describe 'Admin users', type: :feature, js: true do
     it 'should work' do
       stub_token_request
       visit "/courses/#{Course.first.slug}"
-      sleep 1
 
       click_button('Edit Details')
       within '.tags' do

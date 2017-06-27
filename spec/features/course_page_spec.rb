@@ -229,9 +229,9 @@ describe 'the course page', type: :feature, js: true do
     it 'displays a list of articles, and sort articles by class' do
       js_visit "/courses/#{slug}/articles"
       # List of articles
-      sleep 1
-      rows = page.all('tr.article').count
-      expect(rows).to eq(article_count)
+      # rows = page.all('tr.article', minimum: 1).count
+      # expect(rows).to eq(article_count)
+      expect(page).to have_css('tr.article', count: article_count)
 
       # Sorting
       # first click on the Class sorting should sort high to low
@@ -295,7 +295,7 @@ describe 'the course page', type: :feature, js: true do
       stub_info_query
       stub_raw_action
       Assignment.destroy_all
-      sleep 1
+      # sleep 1
       admin = create(:admin, id: User.last.id + 1)
       login_as(admin)
       stub_oauth_edit
@@ -313,7 +313,7 @@ describe 'the course page', type: :feature, js: true do
       expect(assigned_articles_section).to have_content 'Remove'
       click_button 'Remove'
       expect(assigned_articles_section).to_not have_content 'Education'
-      sleep 1
+      # sleep 1
       # FIXME: This is a common intermittent failure on travis-ci
       # expect(Assignment.count).to eq(0)
     end

@@ -39,12 +39,9 @@ describe 'course overview page', type: :feature, js: true do
   context 'when course has started' do
     before do
       visit "/courses/#{course.slug}"
-      sleep 1
     end
     it 'displays week activity for this week' do
-      find '.course__this-week' do
-        expect(page).to have_content 'This Week'
-      end
+      expect(page).to have_css('.course__this-week', text: 'This Week')
     end
   end
 
@@ -53,8 +50,8 @@ describe 'course overview page', type: :feature, js: true do
     before do
       course.update_attribute(:timeline_start, timeline_start)
       visit "/courses/#{course.slug}"
-      sleep 1
     end
+
     it 'displays week activity for the first week' do
       within '.course__this-week' do
         expect(page).to have_content('First Active Week')

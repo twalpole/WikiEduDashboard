@@ -96,7 +96,6 @@ describe 'Training', type: :feature, js: true do
 
     it 'sets the module completed on viewing the last slide' do
       login_as(user, scope: :user)
-      sleep 1
       click_link 'Start'
       tmu = TrainingModulesUsers.find_by(user_id: user.id, training_module_id: module_2.id)
       visit "/training/students/#{module_2.slug}/#{module_2.slides.last.slug}"
@@ -132,14 +131,12 @@ describe 'Training', type: :feature, js: true do
     context 'logged in user' do
       it 'redirects to their dashboard' do
         login_as(user, scope: :user)
-        sleep 1
         visit "/training/students/#{module_2.slug}/#{module_2.slides.last.slug}"
-        sleep 1
+        # sleep 1
         within '.training__slide__footer' do
           click_link 'Done!'
         end
-        sleep 1
-        expect(current_path).to eq(root_path)
+        expect(page).to have_current_path(root_path)
       end
     end
 
@@ -147,11 +144,10 @@ describe 'Training', type: :feature, js: true do
       it 'redirects to library index page' do
         logout(:user)
         visit "/training/students/#{module_2.slug}/#{module_2.slides.last.slug}"
-        sleep 1
         within '.training__slide__footer' do
           click_link 'Done!'
         end
-        expect(current_path).to eq('/training/students')
+        expect(page).to have_current_path('/training/students')
       end
     end
   end
@@ -208,6 +204,7 @@ def find_correct_answer_by_trial_and_error
     end
     click_button 'Check Answer'
     next_button = page.first('a.slide-nav.btn.btn-primary')
-    break unless next_button['disabled'] == 'true'
+    break unless next_button.disabled?
+    # break unless next_button['disabled'] == 'true'
   end
 end

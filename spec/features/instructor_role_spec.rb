@@ -83,7 +83,6 @@ describe 'Instructor users', type: :feature, js: true do
         'name' => 'Risker', 'userid' => 123, 'centralids' => { 'CentralAuth' => 456 }
       )
       visit "/courses/#{Course.first.slug}/students"
-      sleep 1
       click_button 'Enrollment'
       within('#users') { all('input')[1].set('Risker') }
       click_button 'Enroll'
@@ -95,7 +94,6 @@ describe 'Instructor users', type: :feature, js: true do
     it 'should not be able to add nonexistent users as students' do
       allow_any_instance_of(WikiApi).to receive(:get_user_id).and_return(nil)
       visit "/courses/#{Course.first.slug}/students"
-      sleep 1
       click_button 'Enrollment'
       within('#users') { all('input')[1].set('NotARealUser') }
       click_button 'Enroll'
@@ -105,14 +103,13 @@ describe 'Instructor users', type: :feature, js: true do
 
     it 'should be able to remove students' do
       visit "/courses/#{Course.first.slug}/students"
-      sleep 1
 
       # Click the Enrollment button
       click_button 'Enrollment'
-      sleep 1
+      # sleep 1
       # Remove a user
 
-      page.all('button.border.plus')[1].click
+      page.all('button.border.plus', minimum: 2)[1].click
       click_button 'OK'
       sleep 1
 
@@ -175,7 +172,7 @@ describe 'Instructor users', type: :feature, js: true do
       click_button 'Enrollment'
       find('button.border.plus', text: '-', match: :first).click
       click_button 'OK'
-      sleep 1
+      # sleep 1
       expect(page).not_to have_content 'Student A'
 
       puts 'PASSED'
@@ -185,12 +182,12 @@ describe 'Instructor users', type: :feature, js: true do
     it 'should be able to notify users with overdue training' do
       visit "/courses/#{Course.first.slug}/students"
 
-      sleep 1
+      # sleep 1
+      expect(page).to have_button(class: 'notify_overdue')
       # Notify users with overdue training
       page.accept_confirm do
-        find('button.notify_overdue').click
+        click_button(class: 'notify_overdue')
       end
-      sleep 1
     end
   end
 

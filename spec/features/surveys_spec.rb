@@ -194,71 +194,71 @@ describe 'Surveys', type: :feature, js: true do
 
       click_button('Start')
 
-      sleep 1
+      # sleep 1
 
       within('div[data-progress-index="2"]') do
-        click_button('Next', visible: true) # Q1
+        click_button('Next') # Q1
       end
 
       sleep 1
 
       find('.label', text: 'hindi').click
       within('div[data-progress-index="3"]') do
-        click_button('Next', visible: true) # Q2
+        click_button('Next') # Q2
       end
 
       sleep 1
 
       find('.label', text: 'female').click
       within('div[data-progress-index="4"]') do
-        click_button('Next', visible: true) # Q3
+        click_button('Next') # Q3
       end
 
       sleep 1
 
       fill_in('answer_group_6_answer_text', with: 'testing')
       within('div[data-progress-index="5"]') do
-        click_button('Next', visible: true) # Q4
+        click_button('Next') # Q4
       end
 
       sleep 1
 
       select('mac', from: 'answer_group_7_answer_text')
       within('div[data-progress-index="6"]') do
-        click_button('Next', visible: true) # Q5
+        click_button('Next') # Q5
       end
 
       sleep 1
 
       within('div[data-progress-index="7"]') do
-        click_button('Next', visible: true) # Q6
+        click_button('Next') # Q6
       end
 
       sleep 1
 
       fill_in('answer_group_9_answer_text', with: 'testing')
       within('div[data-progress-index="8"]') do
-        click_button('Next', visible: true) # Q7
+        click_button('Next') # Q7
       end
 
       sleep 1
 
       fill_in('answer_group_10_answer_text', with: '50')
       within('div[data-progress-index="9"]') do
-        click_button('Next', visible: true) # Q8
+        click_button('Next') # Q8
       end
 
       sleep 1
 
       within('div[data-progress-index="10"]') do
         find('.label', text: 'None of the above').click
-        click_button('Next', visible: true) # Q9
+        click_button('Next') # Q9
       end
 
       sleep 1
 
       within('div[data-progress-index="11"]') do
-        click_button('Next', visible: true) # Q10
+        click_button('Next') # Q10
       end
 
       # Q11 not rendered
@@ -266,13 +266,13 @@ describe 'Surveys', type: :feature, js: true do
       sleep 1
 
       within('div[data-progress-index="12"]') do
-        click_button('Next', visible: true) # Q12
+        click_button('Next') # Q12
       end
 
       sleep 1
 
       # expect(page).not_to have_content 'You made it!'
-      click_button('Submit Survey', visible: true) # Q13
+      click_button('Submit Survey') # Q13
       expect(page).to have_content 'You made it!'
       sleep 1
       expect(Rapidfire::Answer.count).to eq(21)
@@ -287,6 +287,7 @@ describe 'Surveys', type: :feature, js: true do
 
     it 'loads a question group preview' do
       Capybara.current_driver = :poltergeist
+      # Not really sure what this is testing?
       visit '/surveys/rapidfire/question_groups/1/answer_groups/new?preview'
       visit "/surveys/rapidfire/question_groups/1/answer_groups/new?preview&course_slug=#{Course.last.slug}"
     end
@@ -329,28 +330,28 @@ describe 'Surveys', type: :feature, js: true do
     it 'can view survey if the survey notification id is associated with current user' do
       login_as(@instructor, scope: :user)
       visit survey_path(@survey)
-      expect(current_path).to eq(survey_path(@survey))
+      expect(page).to have_current_path(survey_path(@survey))
     end
 
     it 'can view survey if it is open' do
       login_as(@user, scope: :user)
       visit survey_path(@open_survey)
-      expect(current_path).to eq(survey_path(@open_survey))
+      expect(page).to have_current_path(survey_path(@open_survey))
     end
 
     it 'can view survey if user is an admin' do
       login_as(@admin, scope: :user)
       visit survey_path(@survey)
-      expect(current_path).to eq(survey_path(@survey))
+      expect(page).to have_current_path(survey_path(@survey))
       login_as(@admin, scope: :user)
       visit survey_path(@open_survey)
-      expect(current_path).to eq(survey_path(@open_survey))
+      expect(page).to have_current_path(survey_path(@open_survey))
     end
 
     it 'redirects a user if not logged in or survey notification id isnt associated with them' do
       login_as(@user, scope: :user)
       visit survey_path(@survey)
-      expect(current_path).to eq(root_path)
+      expect(page).to have_current_path(root_path)
     end
   end
 

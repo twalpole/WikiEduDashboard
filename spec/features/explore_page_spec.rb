@@ -69,13 +69,13 @@ describe 'the explore page', type: :feature, js: true do
     it 'should allow navigation to a campaign page' do
       visit '/explore'
       find('#campaigns .table tbody tr:first-child').click
-      expect(current_path).to eq("/campaigns/#{Campaign.first.slug}/programs")
+      expect(page).to have_current_path("/campaigns/#{Campaign.first.slug}/programs")
     end
 
     it 'should allow navigation to a course page' do
       visit '/explore'
       find('#courses .table tbody tr:first-child').click
-      expect(current_path).to eq("/courses/#{course.slug}")
+      expect(page).to have_current_path("/courses/#{course.slug}")
     end
 
     it 'should show the stats accurately' do
