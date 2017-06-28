@@ -51,46 +51,42 @@ def go_through_researchwrite_wizard
   go_through_course_dates_and_timeline_dates
 
   # Choose researchwrite option
-  find('.wizard__option', match: :first).find('button', match: :first).click
+  find('.wizard__option', text: 'Create or expand an article').find('button', match: :first).click
   click_button 'Next'
-  sleep 1
 
   # Click through the offered choices
-  find('.wizard__option', match: :first).find('button', match: :first).click # Training not graded
+  find('.wizard__option', text: 'Yes, training will be graded').find('button', match: :first).click # Training not graded
   click_button 'Next'
-  sleep 1
 
+  expect(page).to have_text("Which introductory assignments would you like to use?")
   click_button 'Next' # Default getting started options
-  sleep 1
 
   # Working in groups
-  find('.wizard__option', match: :first).find('button', match: :first).click
+  find('.wizard__option', text: 'In groups').find('button', match: :first).click
   click_button 'Next'
-  sleep 1
 
   # Instructor prepares list
-  find('.wizard__option', match: :first).find('button', match: :first).click
+  find('.wizard__option', text: 'Instructor prepares a list').find('button', match: :first).click
   click_button 'Next'
-  sleep 1
 
-  find('.wizard__option', match: :first).find('button', match: :first).click # Yes, medical articles
+  find('.wizard__option', text: "Yes. We will").find('button', match: :first).click # Yes, medical articles
   click_button 'Next'
-  sleep 1
 
+  expect(page).to have_text("Peer feedback")
   click_button 'Next' # Default 2 peer reviews
-  sleep 1
 
+  expect(page).to have_text("In-class Wikipedia discussions")
   click_button 'Next' # Default 3 discussions
-  sleep 1
 
+  expect(page).to have_text("Supplementary assignments")
   click_button 'Next' # No supplementary assignments
-  sleep 1
 
+  expect(page).to have_text("Wikipedia quality review processes")
   click_button 'Next' # No DYK/GA
-  sleep 1
 
   click_button 'Generate Timeline'
   sleep 1
+
 end
 
 describe 'New course creation and editing', type: :feature do
@@ -123,9 +119,9 @@ describe 'New course creation and editing', type: :feature do
       # If we click before filling out all require fields, only the invalid
       # fields get restyled to indicate the problem.
       click_button 'Create my Course!'
-      expect(find('#course_title')['class']).not_to include('invalid title')
-      expect(find('#course_school')['class']).to include('invalid school')
-      expect(find('#course_term')['class']).to include('invalid term')
+      expect(page).to have_css('#course_title', class: 'title') { |el| el[:class] !~ /invalid/ }
+      expect(page).to have_css('#course_school', class: ['invalid', 'school'])
+      expect(page).to have_css('#course_term', class: ['invalid', 'term'])
 
       # Now we fill out all the fields and continue.
       find('#course_school').set('University of Wikipedia, East Campus')
@@ -141,6 +137,7 @@ describe 'New course creation and editing', type: :feature do
       find('div.DayPicker-Day--selected', text: '1').click
       find('.course_end-datetime-control input').set('2015-12-01')
       find('div.DayPicker-Day', text: '15').click
+      expect(page).not_to have_css('.DayPicker')
 
       # This click should create the course and start the wizard
       click_button 'Create my Course!'
@@ -166,14 +163,14 @@ describe 'New course creation and editing', type: :feature do
 
       # This is the assignment type chooser
       # pick and choose
-      page.all('.wizard__option')[1].first('button').click
+      page.all('.wizard__option', minimum: 2)[1].first('button').click
       sleep 1
       click_button 'Next'
       sleep 1
       # pick 2 types of assignments
       page.all('div.wizard__option__checkbox')[1].click
       page.all('div.wizard__option__checkbox')[3].click
-      sleep 1
+      # sleep 1
       click_button 'Next'
 
       # on the summary
@@ -184,7 +181,7 @@ describe 'New course creation and editing', type: :feature do
       page.all('div.wizard__option__checkbox')[3].click
       page.all('div.wizard__option__checkbox')[2].click
       page.all('div.wizard__option__checkbox')[4].click
-      sleep 1
+      # sleep 1
       click_button 'Summary'
       sleep 1
       click_button 'Generate Timeline'
@@ -274,7 +271,7 @@ describe 'New course creation and editing', type: :feature do
       fill_in("Start date (YYYY-MM-DD)", with: start_date)
       fill_in("End date (YYYY-MM-DD)", with: end_date)
       find('div.wizard__panel').click # click to escape the calendar popup
-
+      expect(page).not_to have_css('.DayPicker')
       # This click should not successfully create a course.
       click_button 'Create my Course!'
       expect(page).to have_content 'This course already exists'
@@ -301,7 +298,6 @@ describe 'New course creation and editing', type: :feature do
 
       # Visit timline and open wizard
       visit "/courses/#{Course.first.slug}/timeline/wizard"
-      sleep 1
 
       go_through_researchwrite_wizard
 
@@ -309,7 +305,7 @@ describe 'New course creation and editing', type: :feature do
 
       # Now submit the course
       accept_confirm do
-        first('a.button').click
+        find('a.button', text: 'Submit').click
       end
       expect(page).to have_content 'Your course has been submitted.'
 

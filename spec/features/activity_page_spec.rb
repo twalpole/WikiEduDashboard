@@ -64,7 +64,6 @@ describe 'activity page', type: :feature, js: true do
         # Admin is admin of course 1, should only see user1's revision
         # when checked
         visit '/recent-activity'
-        sleep 1
         within '.activity-table' do
           expect(page).to have_content article.title.tr('_', ' ')
           expect(page).to have_content article2.title.tr('_', ' ')

@@ -85,7 +85,7 @@ describe 'Admin users', type: :feature, js: true do
       expect(page).to have_content 'Your course has been published'
 
       visit root_path
-      sleep 1
+      expect(page).to have_content 'My Dashboard'
       expect(page).not_to have_content 'Submitted & Pending Approval'
     end
   end
@@ -104,13 +104,13 @@ describe 'Admin users', type: :feature, js: true do
 
       # Edit details and remove campaign
       click_button('Edit Details')
-      page.all('.button.border.plus')[4].click
+      page.all('.button.border.plus', minimum: 5)[4].click
       page.find('.button.border.plus', text: '-').click
 
       expect(page).to have_content 'This course has been submitted'
 
       visit root_path
-      sleep 1
+      expect(page).to have_content 'My Dashboard'
       expect(page).to have_content 'Submitted & Pending Approval'
 
       puts 'PASSED'
@@ -127,12 +127,13 @@ describe 'Admin users', type: :feature, js: true do
       within '.tags' do
         page.find('.button.border.plus').click
         page.find('input').set 'My Tag'
-        find('.pop button', visible: true).click
+        find('.pop button').click
       end
-
       sleep 1
+
       visit "/courses/#{Course.first.slug}"
       sleep 1
+
       expect(page).to have_content 'My Tag'
 
       # Add the same tag again
@@ -140,8 +141,8 @@ describe 'Admin users', type: :feature, js: true do
       within('div.tags') do
         page.find('.button.border.plus').click
       end
-      page.find('section.overview input[placeholder="Tag"]').set 'My Tag'
-      page.all('.pop button', visible: true)[1].click
+      page.find('section.overview').fill_in('Tag', with: 'My Tag')
+      page.all('.pop button', minimum: 2)[1].click
 
       # Delete the tag
       within('div.tags') do
@@ -150,7 +151,7 @@ describe 'Admin users', type: :feature, js: true do
       sleep 1
       visit "/courses/#{Course.first.slug}"
       sleep 1
-      expect(page).not_to have_content 'My Tag'
+      expect(page).to have_css('.course-details .tags') { |el| el.text !~ /My Tag/ }
     end
   end
 

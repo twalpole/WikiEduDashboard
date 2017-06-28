@@ -19,6 +19,7 @@ end
 
 Capybara.configure do |config|
   config.javascript_driver = :poltergeist
+  # config.javascript_driver = :selenium
   config.default_max_wait_time = 10
 end
 
@@ -104,9 +105,9 @@ end
 # Some .click actions don't work on Poltergeist because of overlapping elements,
 # but .trigger('click') is only available in Poltergeist.
 def omniclick(node)
-  if Capybara.current_driver == :poltergeist
-    node.trigger('click')
-  else
+  # if Capybara.current_driver == :poltergeist
+  #   node.trigger('click')
+  # else
     node.click
-  end
+  # end
 end

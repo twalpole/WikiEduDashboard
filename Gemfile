@@ -98,6 +98,7 @@ group :development, :test do
   gem 'launchy'
   gem 'timecop'
   gem 'poltergeist'
+  gem 'selenium-webdriver'
 end
 
 group :test do

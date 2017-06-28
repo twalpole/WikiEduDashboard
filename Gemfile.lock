@@ -131,6 +131,8 @@ GEM
     capybara-screenshot (1.0.14)
       capybara (>= 1.0, < 3)
       launchy
+    childprocess (0.7.1)
+      ffi (~> 1.0, >= 1.0.11)
     choice (0.2.0)
     chronic (0.10.2)
     climate_control (0.2.0)
@@ -419,7 +421,11 @@ GEM
     ruby_dep (1.5.0)
     ruby_parser (3.9.0)
       sexp_processor (~> 4.1)
+    rubyzip (1.2.1)
     safe_yaml (1.0.4)
+    selenium-webdriver (3.4.3)
+      childprocess (~> 0.5)
+      rubyzip (~> 1.0)
     sentimental (1.4.1)
     sentry-raven (2.5.2)
       faraday (>= 0.7.6, < 1.0)
@@ -553,6 +559,7 @@ DEPENDENCIES
   restforce!
   rspec-rails
   rubocop
+  selenium-webdriver
   sentimental
   sentry-raven
   shoulda-matchers (~> 3.1)
